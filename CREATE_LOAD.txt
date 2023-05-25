@@ -1,0 +1,68 @@
+CREATE TABLE customers
+(
+CustID INT NOT NULL AUTO_INCREMENT,
+       	Name VARCHAR(30),
+        	Phone CHAR(14),
+        	PRIMARY KEY (CustID)
+);
+
+CREATE TABLE rate
+(
+Type INT NOT NULL,
+        	Category INT NOT NULL,
+        	Weekly FLOAT NOT NULL,
+        	Daily FLOAT NOT NULL,
+        	PRIMARY KEY (Type, Category)
+); 
+
+CREATE TABLE vehicle
+(
+	VehicleID CHAR(17) NOT NULL,
+    	Description VARCHAR(30) NOT NULL,
+    	Year YEAR NOT NULL,
+	Type INT NOT NULL,
+    	Category INT NOT NULL,
+    	PRIMARY KEY (VehicleID),
+    	FOREIGN KEY (Type, Category) REFERENCES rate(Type, Category)
+);
+
+CREATE TABLE rental
+(
+	CustID INT NOT NULL,
+    	VehicleID CHAR(17) NOT NULL,
+    	StartDate VARCHAR(15) NOT NULL,
+    	OrderDate VARCHAR(15) NOT NULL,
+    	RentalType INT NOT NULL,
+    	Qty INT NOT NULL,	
+    	ReturnDate VARCHAR(15) NOT NULL,
+    	TotalAmount FLOAT NOT NULL,
+    	PaymentDate VARCHAR(15) NULL,
+	PRIMARY KEY (VehicleID, StartDate),
+    	FOREIGN KEY (VehicleID) REFERENCES vehicle(VehicleID),
+    	FOREIGN KEY (CustID) REFERENCES customers(CustID)
+);
+
+LOAD DATA INFILE "C:/xampp/htdocs/Code/CUSTOMER.csv"
+INTO TABLE customers
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
+
+LOAD DATA INFILE "C:/xampp/htdocs/Code/RATE.csv"
+INTO TABLE rate
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\r\n'
+IGNORE 1 LINES;
+
+LOAD DATA INFILE "C:/xampp/htdocs/Code/VEHICLE.csv"
+INTO TABLE vehicle
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
+
+LOAD DATA INFILE "C:/xampp/htdocs/Code/RENTAL.csv"
+INTO TABLE rental
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
+
